@@ -36,7 +36,19 @@ jobs:
           # sano (se verificó: el mismo lockfile instala limpio fuera de CI).
 
       - name: Instalar dependencias
-        run: npm ci --no-cache
+        run: |
+          set +e
+          OUTPUT=$(npm ci --no-cache 2>&1)
+          CODE=$?
+          echo "$OUTPUT"
+          if [ $CODE -ne 0 ]; then
+            # Publica las últimas líneas como anotación pública del check run,
+            # legible sin permisos de admin (a diferencia del log completo),
+            # para poder diagnosticar el fallo real de npm ci.
+            TAIL=$(echo "$OUTPUT" | tail -c 900 | tr '\n' ' ' | tr '%' '_')
+            echo "::error::npm ci exit $CODE :: $TAIL"
+            exit $CODE
+          fi
 
       - name: Construir sitio estático
         run: npm run build
