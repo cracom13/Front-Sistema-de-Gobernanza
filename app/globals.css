@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  "Vinotinto Executive Terminal" — design tokens
+  Obsidian + vinotinto command-center aesthetic. Micro-border rigor over
+  heavy shadows; status green/red kept outside the brand hue so "Al Día /
+  En Mora" never competes with the wine accent.
+
+  Theme is controlled by [data-theme="light" | "dark"] on <html>, set by an
+  inline script in app/layout.tsx (reads localStorage, falls back to the OS
+  preference) so there is no flash on load. Toggle with useTheme().
+*/
+@layer base {
+  /* ── Light (default) ── */
+  :root,
+  :root[data-theme="light"] {
+    --paper: 342 25% 90%;    /* #ecdfe3 ground */
+    --surface: 0 0% 100%;    /* #ffffff elevated cards */
+
+    --ink: 330 8% 20%;        /* #362e32 */
+    --ink-soft: 348 10% 39%;  /* #6e5a5e */
+    --ink-faint: 353 10% 51%; /* #8f7679 */
+
+    --brass: 350 40% 43%;       /* #994251 */
+    --brass-soft: 348 38% 51%;  /* #b25366 */
+    --brass-wash: 354 100% 93%; /* #ffd9dd */
+
+    --ok: 142 72% 29%;      /* #15803d */
+    --ok-wash: 141 84% 93%; /* #dcfce7 */
+    --due: 0 75% 42%;       /* #ba1a1a */
+    --due-wash: 6 100% 92%; /* #ffdad6 */
+
+    --rule: 351 16% 84%; /* #ddd0d2 */
+
+    --radius: 0.25rem;
+    --glow-alpha: 0.18;
+  }
+
+  /* ── Dark ── */
+  :root[data-theme="dark"] {
+    --paper: 324 12% 8%;   /* #171215 ground */
+    --surface: 330 9% 13%; /* #241e21 elevated panels */
+
+    --ink: 342 25% 90%;       /* #ecdfe3 */
+    --ink-soft: 355 26% 80%;  /* #dac0c2 */
+    --ink-faint: 355 11% 59%; /* #a28b8d */
+
+    --brass: 353 100% 85%;      /* #ffb2bb */
+    --brass-soft: 353 100% 81%; /* #ff9da8 */
+    --brass-wash: 343 88% 16%;  /* #4c0519 */
+
+    --ok: 156 72% 67%;      /* #6ee7b7 */
+    --ok-wash: 166 91% 9%;  /* #022c22 */
+    --due: 6 100% 84%;      /* #ffb4ab */
+    --due-wash: 356 100% 29%; /* #93000a */
+
+    --rule: 353 12% 29%; /* #544244 */
+
+    --radius: 0.25rem;
+    --glow-alpha: 0.4;
+  }
+
+  /* No explicit choice yet: honor the OS preference until useTheme() writes one. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --paper: 324 12% 8%;
+      --surface: 330 9% 13%;
+      --ink: 342 25% 90%;
+      --ink-soft: 355 26% 80%;
+      --ink-faint: 355 11% 59%;
+      --brass: 353 100% 85%;
+      --brass-soft: 353 100% 81%;
+      --brass-wash: 343 88% 16%;
+      --ok: 156 72% 67%;
+      --ok-wash: 166 91% 9%;
+      --due: 6 100% 84%;
+      --due-wash: 356 100% 29%;
+      --rule: 353 12% 29%;
+      --glow-alpha: 0.4;
+    }
+  }
+
+  * {
+    border-color: hsl(var(--rule));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--paper));
+    color: hsl(var(--ink));
+    font-feature-settings: "ss01", "cv05";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Headlines carry the Space Grotesk command-console voice */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    color: hsl(var(--ink));
+    letter-spacing: -0.02em;
+  }
+
+  /* Visible keyboard focus — wine ring, offset for legibility */
+  :focus-visible {
+    outline: 2px solid hsl(var(--brass));
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background: hsl(var(--brass) / 0.3);
+    color: hsl(var(--ink));
+  }
+
+  /* Tabular figures for all telemetry/ledger numerics by default in tables */
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  .font-tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Hairline micro-border used to separate real entries, not decorate */
+  .ledger-rule {
+    border-bottom: 1px solid hsl(var(--rule));
+  }
+
+  /* Subtle dot-grain texture for hero surfaces */
+  .paper-grain {
+    background-image: radial-gradient(
+      hsl(var(--ink) / 0.03) 1px,
+      transparent 1px
+    );
+    background-size: 14px 14px;
+  }
+
+  .wallet-mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    letter-spacing: -0.01em;
+  }
+
+  /* Energized console glow — intensity adapts per theme via --glow-alpha */
+  .glow-brass {
+    box-shadow: 0 0 16px -2px hsl(var(--brass) / var(--glow-alpha));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
