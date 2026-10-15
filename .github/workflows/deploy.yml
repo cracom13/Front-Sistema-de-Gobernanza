@@ -30,6 +30,12 @@ jobs:
           # versión usada localmente para generar package-lock.json.
           node-version: "22"
 
+      - name: Fijar npm a la misma versión que generó el lockfile
+        # Node 22 trae por defecto una npm más vieja (~10.x) que es muy
+        # estricta validando package-lock.json en "npm ci"; el lockfile de
+        # este repo se generó con npm 11.6.2 (Node 24 local).
+        run: npm install -g npm@11.6.2
+
       - name: Instalar dependencias
         run: |
           set +e
