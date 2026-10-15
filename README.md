@@ -26,6 +26,33 @@ npm run dev                  # http://localhost:3000
 > todas las pantallas funcionan sin contratos desplegados. Complete el
 > `CLIENT_ID` y las direcciones de los contratos para conectar con Fuji real.
 
+## Despliegue en GitHub Pages
+
+Cada push a `main` dispara `.github/workflows/deploy.yml`, que construye el
+sitio como export estático (`output: "export"`) y lo publica automáticamente.
+
+- **Sitio publicado:** `https://cracom13.github.io/Front-Sistema-de-Gobernanza/`
+- **Paso único manual** (solo la primera vez): en el repo, ir a
+  *Settings → Pages → Build and deployment → Source* y elegir
+  **"GitHub Actions"**. Sin esto, el workflow corre pero Pages no sirve nada.
+- El `basePath` (`/Front-Sistema-de-Gobernanza`) está fijado en
+  `next.config.mjs`. **Si el repositorio cambia de nombre, hay que actualizar
+  la constante `REPO_NAME` en ese archivo**, o todos los assets (`_next/...`)
+  quedarán rotos.
+- **Limitación conocida:** GitHub Pages no tiene servidor, así que las rutas
+  dinámicas (`/proposals/[id]`, `/assembly/[id]`) solo existen para los ids
+  conocidos en build time (`generateStaticParams` en cada `page.tsx`, hoy
+  tomados de `lib/mock.ts`). Una propuesta o asamblea nueva requiere un
+  rebuild (push a `main`) para quedar publicada. Cuando el token/Governor
+  estén desplegados en Fuji y se quiera soportar ids verdaderamente
+  arbitrarios sin rebuild, conviene migrar esas dos rutas a query string
+  (`/proposals?id=42`) en vez de segmento de ruta.
+- Para probar el build exacto de producción en local antes de pushear:
+  ```bash
+  GITHUB_PAGES=true npm run build
+  npx serve out
+  ```
+
 ## Variables de entorno
 
 Ver `.env.example`. Las claves principales:
