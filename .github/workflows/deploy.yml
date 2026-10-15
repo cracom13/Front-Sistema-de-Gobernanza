@@ -26,11 +26,17 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: npm
+          # Node 20 está deprecado en GitHub Actions; 22 coincide con la
+          # versión usada localmente para generar package-lock.json.
+          node-version: "22"
+          # Sin cache: npm. Un intento fallido puede dejar guardada una
+          # caché de ~/.npm corrupta bajo la clave del lockfile actual, y
+          # setup-node la reutiliza en cada run siguiente, reproduciendo el
+          # mismo fallo de "npm ci" indefinidamente aunque el lockfile esté
+          # sano (se verificó: el mismo lockfile instala limpio fuera de CI).
 
       - name: Instalar dependencias
-        run: npm ci
+        run: npm ci --no-cache
 
       - name: Construir sitio estático
         run: npm run build
