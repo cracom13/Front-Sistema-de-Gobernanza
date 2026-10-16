@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+/*
+  Inter: grotesco neutro, equivalente libre de la Suisse Int'l que usa la
+  plantilla de referencia (Suisse es comercial y no se puede empaquetar sin
+  licencia). Una sola familia para títulos y cuerpo, como el frame; Geist Mono
+  se reserva para direcciones de wallet y hashes.
+*/
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -48,7 +53,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}
+        className={`${inter.variable} ${GeistMono.variable} font-sans antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

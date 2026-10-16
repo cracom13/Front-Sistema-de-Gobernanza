@@ -142,6 +142,52 @@ export const MOCK_ASSEMBLY: Assembly = {
   ],
 };
 
+/**
+ * Participación (porcentaje del poder total que emitió voto) por asamblea de
+ * los últimos periodos. El último punto es una proyección de la asamblea en
+ * curso (votaciones aún abiertas), por eso se dibuja punteado. `value` es el
+ * % de quórum alcanzado; el umbral legal de mayoría es 51% (Ley 675/2001).
+ * En producción esto se deriva de los eventos de voto en cadena por propuesta.
+ */
+export interface ParticipationPoint {
+  label: string;
+  value: number;
+  projected?: boolean;
+}
+
+export const MOCK_PARTICIPATION: ParticipationPoint[] = [
+  { label: "Mar", value: 48 },
+  { label: "Abr", value: 52 },
+  { label: "May", value: 61 },
+  { label: "Jun", value: 49 },
+  { label: "Jul", value: 57 },
+  { label: "Ago", value: 64 },
+  { label: "Sep", value: 75 }, // Propuesta 40, cerrada: 74.9% real
+  { label: "Oct", value: 58, projected: true }, // Presupuesto 2027 en curso
+];
+
+/**
+ * Resultados de propuestas recientes para la gráfica de barras apiladas del
+ * dashboard. La altura de cada barra es la participación (poder emitido sobre
+ * el total elegible, 100.000); los segmentos son la composición del voto. Las
+ * #40/#42/#43 coinciden con MOCK_PROPOSALS; el resto es histórico de demo.
+ */
+export interface ProposalResultPoint {
+  label: string;
+  for: number;
+  against: number;
+  abstain: number;
+}
+
+export const MOCK_PROPOSAL_RESULTS: ProposalResultPoint[] = [
+  { label: "#38", for: 41_000, against: 12_000, abstain: 5_000 },
+  { label: "#39", for: 33_000, against: 9_000, abstain: 4_000 },
+  { label: "#40", for: 62_300, against: 8_100, abstain: 4_500 }, // real, cerrada
+  { label: "#41", for: 28_000, against: 19_000, abstain: 6_000 },
+  { label: "#42", for: 28_400, against: 9_200, abstain: 3_100 }, // real, en curso
+  { label: "#43", for: 15_900, against: 4_300, abstain: 2_000 }, // real, en curso
+];
+
 export const MOCK_LEDGER: LedgerEvent[] = [
   {
     id: "l1",

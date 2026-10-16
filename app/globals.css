@@ -13,26 +13,42 @@
   preference) so there is no flash on load. Toggle with useTheme().
 */
 @layer base {
+  /*
+    Curvas de movimiento, compartidas por ambos temas. Todo transition/
+    animation del sistema las extiende en vez de inventar curvas paralelas
+    (filosofía de animación de Emil Kowalski).
+  */
+  :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* entradas/salidas de UI */
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* movimiento en pantalla */
+  }
+
   /* ── Light (default) ── */
   :root,
   :root[data-theme="light"] {
-    --paper: 342 25% 90%;    /* #ecdfe3 ground */
-    --surface: 0 0% 100%;    /* #ffffff elevated cards */
+    --paper: 40 13% 96%;     /* #f6f5f2 lienzo neutro cálido (como el frame) */
+    --surface: 0 0% 100%;    /* #ffffff tarjetas */
 
-    --ink: 330 8% 20%;        /* #362e32 */
-    --ink-soft: 348 10% 39%;  /* #6e5a5e */
-    --ink-faint: 353 10% 51%; /* #8f7679 */
+    --ink: 20 6% 11%;         /* #1e1b19 casi-negro neutro */
+    --ink-soft: 20 5% 35%;    /* #5d5752 */
+    --ink-faint: 24 5% 55%;   /* #928c85 etiquetas gris */
 
-    --brass: 350 40% 43%;       /* #994251 */
-    --brass-soft: 348 38% 51%;  /* #b25366 */
-    --brass-wash: 354 100% 93%; /* #ffd9dd */
+    --brass: 350 55% 42%;       /* #a62f46 vinotinto pleno (marca + acción) */
+    --brass-soft: 348 52% 52%;  /* #c0566c hover */
+    --brass-wash: 349 66% 94%;  /* #fbe3e8 tinte vino para píldoras/activos */
+
+    /* Dato, no marca: bordeaux profundo para rellenos/gráficas + metálico
+       contenido para la serie/umbral secundario. */
+    --vino: 345 68% 31%;     /* #841a35 */
+    --gold: 38 58% 42%;      /* #ab7a2c */
+    --gold-wash: 40 60% 90%; /* #f4e8d2 */
 
     --ok: 142 72% 29%;      /* #15803d */
     --ok-wash: 141 84% 93%; /* #dcfce7 */
     --due: 0 75% 42%;       /* #ba1a1a */
     --due-wash: 6 100% 92%; /* #ffdad6 */
 
-    --rule: 351 16% 84%; /* #ddd0d2 */
+    --rule: 36 12% 89%; /* #e9e6e1 hairline neutro */
 
     --radius: 0.25rem;
     --glow-alpha: 0.18;
@@ -40,23 +56,28 @@
 
   /* ── Dark ── */
   :root[data-theme="dark"] {
-    --paper: 324 12% 8%;   /* #171215 ground */
-    --surface: 330 9% 13%; /* #241e21 elevated panels */
+    --paper: 20 7% 8%;     /* #161311 obsidiana cálida */
+    --surface: 20 6% 12%;  /* #201d1b paneles */
 
-    --ink: 342 25% 90%;       /* #ecdfe3 */
-    --ink-soft: 355 26% 80%;  /* #dac0c2 */
-    --ink-faint: 355 11% 59%; /* #a28b8d */
+    --ink: 30 9% 91%;         /* #ebe7e3 neutro cálido (sin tinte rosa) */
+    --ink-soft: 25 7% 76%;    /* #c6c0ba */
+    --ink-faint: 24 5% 58%;   /* #9a938c */
 
-    --brass: 353 100% 85%;      /* #ffb2bb */
-    --brass-soft: 353 100% 81%; /* #ff9da8 */
+    --brass: 352 66% 74%;       /* #e39dab palo de rosa (vino legible en oscuro, sin chicle) */
+    --brass-soft: 352 72% 80%;  /* #ecb0bc hover */
     --brass-wash: 343 88% 16%;  /* #4c0519 */
+
+    /* Dato, no marca: vino que sí resalta sobre superficies oscuras + oro cálido. */
+    --vino: 346 58% 52%;     /* #c43e5f */
+    --gold: 40 62% 63%;      /* #dab364 */
+    --gold-wash: 40 30% 16%; /* #352d1c */
 
     --ok: 156 72% 67%;      /* #6ee7b7 */
     --ok-wash: 166 91% 9%;  /* #022c22 */
     --due: 6 100% 84%;      /* #ffb4ab */
     --due-wash: 356 100% 29%; /* #93000a */
 
-    --rule: 353 12% 29%; /* #544244 */
+    --rule: 24 6% 22%; /* #3a3531 neutro */
 
     --radius: 0.25rem;
     --glow-alpha: 0.4;
@@ -65,19 +86,22 @@
   /* No explicit choice yet: honor the OS preference until useTheme() writes one. */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
-      --paper: 324 12% 8%;
-      --surface: 330 9% 13%;
-      --ink: 342 25% 90%;
-      --ink-soft: 355 26% 80%;
-      --ink-faint: 355 11% 59%;
-      --brass: 353 100% 85%;
-      --brass-soft: 353 100% 81%;
+      --paper: 20 7% 8%;
+      --surface: 20 6% 12%;
+      --ink: 30 9% 91%;
+      --ink-soft: 25 7% 76%;
+      --ink-faint: 24 5% 58%;
+      --brass: 352 66% 74%;
+      --brass-soft: 352 72% 80%;
       --brass-wash: 343 88% 16%;
+      --vino: 346 58% 52%;
+      --gold: 40 62% 63%;
+      --gold-wash: 40 30% 16%;
       --ok: 156 72% 67%;
       --ok-wash: 166 91% 9%;
       --due: 6 100% 84%;
       --due-wash: 356 100% 29%;
-      --rule: 353 12% 29%;
+      --rule: 24 6% 22%;
       --glow-alpha: 0.4;
     }
   }
@@ -99,9 +123,9 @@
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Headlines carry the Space Grotesk command-console voice */
+  /* Headlines en Inter (misma familia que el cuerpo, como la referencia) */
   h1, h2, h3, h4 {
-    font-family: var(--font-display), system-ui, sans-serif;
+    font-family: var(--font-sans), system-ui, sans-serif;
     color: hsl(var(--ink));
     letter-spacing: -0.02em;
   }
@@ -144,7 +168,7 @@
   }
 
   .wallet-mono {
-    font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
     letter-spacing: -0.01em;
   }
 

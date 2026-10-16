@@ -26,6 +26,13 @@ const config: Config = {
           soft: "hsl(var(--brass-soft) / <alpha-value>)",
           wash: "hsl(var(--brass-wash) / <alpha-value>)",
         },
+        // Dato, no marca: vino profundo para rellenos/series, oro contenido
+        // para la serie/umbral secundario (ver --vino / --gold en globals.css).
+        vino: "hsl(var(--vino) / <alpha-value>)",
+        gold: {
+          DEFAULT: "hsl(var(--gold) / <alpha-value>)",
+          wash: "hsl(var(--gold-wash) / <alpha-value>)",
+        },
         ok: {
           DEFAULT: "hsl(var(--ok) / <alpha-value>)",
           wash: "hsl(var(--ok-wash) / <alpha-value>)",
@@ -59,10 +66,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        // Space Grotesk for structural/executive elements: KPIs, headers, metrics.
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
-        // Geist for continuous prose, labels, metadata.
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        // Inter (equivalente libre de Suisse Int'l): una sola familia neutra
+        // para títulos (font-display) y cuerpo (font-sans), como la referencia.
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         // Geist Mono for wallet addresses, hashes, IDs.
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
       },
@@ -98,9 +105,19 @@ const config: Config = {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        "fade-out": {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
         "rise-in": {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
+        },
+        // Camino de salida simétrico al de rise-in: una superficie se va por
+        // donde llegó, nunca teleporta (dialog.tsx, assistant-widget.tsx).
+        "rise-out": {
+          from: { opacity: "1", transform: "translateY(0)" },
+          to: { opacity: "0", transform: "translateY(8px)" },
         },
         "seal-in": {
           "0%": { opacity: "0", transform: "scale(0.92) rotate(-6deg)" },
@@ -109,8 +126,11 @@ const config: Config = {
         },
       },
       animation: {
-        "fade-in": "fade-in 0.4s ease-out",
-        "rise-in": "rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+        // Entradas/salidas: var(--ease-out), consistente en todo el sistema.
+        "fade-in": "fade-in 300ms var(--ease-out)",
+        "fade-out": "fade-out 200ms var(--ease-out)",
+        "rise-in": "rise-in 350ms var(--ease-out)",
+        "rise-out": "rise-out 200ms var(--ease-out)",
         "seal-in": "seal-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
       },
     },

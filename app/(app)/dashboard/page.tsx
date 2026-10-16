@@ -10,10 +10,16 @@ import {
 import { useWeb3Auth } from "@/hooks/useWeb3Auth";
 import { useGovernanceStore } from "@/store/useGovernanceStore";
 import { VotingWeight } from "@/components/dashboard/voting-weight";
+import { ParticipationChart } from "@/components/dashboard/participation-chart";
+import { ResultsChart } from "@/components/dashboard/results-chart";
 import { WalletCard } from "@/components/wallet/wallet-card";
 import { FinanceStatus } from "@/components/finance-status";
 import { Card } from "@/components/ui/card";
-import { MOCK_ASSEMBLY } from "@/lib/mock";
+import {
+  MOCK_ASSEMBLY,
+  MOCK_PARTICIPATION,
+  MOCK_PROPOSAL_RESULTS,
+} from "@/lib/mock";
 import { formatDate, formatNumber, quorumProgress } from "@/lib/utils";
 
 export default function DashboardPage() {
@@ -87,6 +93,13 @@ export default function DashboardPage() {
             </dl>
           </Card>
         </div>
+      </div>
+
+      {/* Banda de analítica a ancho completo (anatomía del frame de referencia:
+          las gráficas van emparejadas, no colgando de una sola columna). */}
+      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+        <ParticipationChart data={MOCK_PARTICIPATION} />
+        <ResultsChart data={MOCK_PROPOSAL_RESULTS} />
       </div>
     </div>
   );

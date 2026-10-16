@@ -33,13 +33,13 @@ export function ThemeToggle({
       <span className="relative flex size-5 shrink-0 items-center justify-center">
         <Sun
           className={cn(
-            "absolute size-5 transition-all",
+            "absolute size-5 transition-[transform,opacity] duration-150 ease-[var(--ease-out)]",
             mounted && isDark ? "scale-0 opacity-0" : "scale-100 opacity-100"
           )}
         />
         <Moon
           className={cn(
-            "absolute size-5 transition-all",
+            "absolute size-5 transition-[transform,opacity] duration-150 ease-[var(--ease-out)]",
             mounted && isDark ? "scale-100 opacity-100" : "scale-0 opacity-0"
           )}
         />

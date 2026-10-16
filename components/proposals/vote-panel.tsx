@@ -153,7 +153,7 @@ export function VotePanel({
               data-active={active}
               onClick={() => setChoice(o.value)}
               className={cn(
-                "flex flex-col items-center gap-2 rounded-lg border border-rule bg-surface px-2 py-4 text-sm font-semibold text-ink-soft transition-colors hover:border-ink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass disabled:opacity-60",
+                "flex flex-col items-center gap-2 rounded-lg border border-rule bg-surface px-2 py-4 text-sm font-semibold text-ink-soft transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] hover:border-ink/30 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass disabled:opacity-60 disabled:active:scale-100",
                 o.cls
               )}
             >

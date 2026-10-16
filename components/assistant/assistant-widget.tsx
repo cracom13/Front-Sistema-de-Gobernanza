@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MessageCircleQuestion, X, Send, Loader2 } from "lucide-react";
 import { ASSISTANT_WEBHOOK } from "@/lib/constants";
 import { useWeb3Auth } from "@/hooks/useWeb3Auth";
@@ -22,6 +22,10 @@ const SUGGESTIONS = [
 export function AssistantWidget() {
   const { user } = useWeb3Auth();
   const [open, setOpen] = useState(false);
+  // El panel es hecho a mano (no Radix): sin Presence automático, hay que
+  // mantenerlo montado durante la salida para que rise-out pueda jugar antes
+  // de desmontar, en vez de desaparecer de golpe.
+  const [shouldRender, setShouldRender] = useState(false);
   const [sending, setSending] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<AssistantMessage[]>([
@@ -34,6 +38,10 @@ export function AssistantWidget() {
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) setShouldRender(true);
+  }, [open]);
 
   async function send(text: string) {
     const content = text.trim();
@@ -106,12 +114,19 @@ export function AssistantWidget() {
         {!open && <span className="hidden sm:inline">¿Necesita ayuda?</span>}
       </button>
 
-      {/* Panel */}
-      {open && (
+      {/* Panel — se mantiene montado durante rise-out; onAnimationEnd lo
+          retira recién cuando la salida termina, nunca de golpe. */}
+      {shouldRender && (
         <div
           role="dialog"
           aria-label="Asistente virtual"
-          className="fixed bottom-24 right-5 z-40 flex h-[32rem] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-lg border border-rule bg-surface shadow-float animate-rise-in"
+          onAnimationEnd={() => {
+            if (!open) setShouldRender(false);
+          }}
+          className={cn(
+            "fixed bottom-24 right-5 z-40 flex h-[32rem] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-lg border border-rule bg-surface shadow-float",
+            open ? "animate-rise-in" : "animate-rise-out"
+          )}
         >
           <header className="flex items-center gap-2 border-b border-rule bg-ink px-4 py-3 text-paper">
             <MessageCircleQuestion className="size-5 text-brass-soft" />

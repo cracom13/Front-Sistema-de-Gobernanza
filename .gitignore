@@ -9,3 +9,11 @@ next-env.d.ts
 .DS_Store
 npm-debug.log*
 .vercel
+
+# Skills de agentes instaladas localmente (npx skills add) — herramientas de
+# Claude Code para este desarrollador, no parte del código fuente del proyecto.
+/.agents/
+/.claude/skills/
+/pnpm-lock.yaml
+/pnpm-workspace.yaml
+/skills-lock.json
